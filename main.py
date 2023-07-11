@@ -18,12 +18,12 @@ def connection(c_obj):
 
     return c_datas
 
-dbschema = 'database_api_cdp'
-password = 'toto@2021'
+dbschema = "database_api_cdp"
+password = "toto@2021"
 encoded_password = quote(password)
 
 engine = create_engine(
-    f'mysql+mysqlconnector://toto:{encoded_password}@35.240.144.191:3306/{dbschema}'
+    f"mysql+mysqlconnector://toto:{encoded_password}@35.240.144.191:3306/{dbschema}"
 )
 
 query = """select * from database_api_cdp.configs where deleted_at is null"""
@@ -52,5 +52,9 @@ for _, row in datas.iterrows():
     )
     config_objects.append(config_obj)
 
+<<<<<<< HEAD
 for config_obj in config_objects:
     connection(config_obj)
+=======
+# hi
+>>>>>>> d06e67c0aec1386ea449039cabe296b3c89acaca
