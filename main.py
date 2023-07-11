@@ -6,17 +6,17 @@ from config import *
 
 
 def connection(c_obj):
-    c_dbschema = c_obj.name
+    c_dbschema = c_obj.db_name
     c_password = c_obj.db_password
     c_encoded_password = quote(c_password)
 
     c_engine = create_engine(
-        f'mysql+mysqlconnector://{c_obj.db_username}:{encoded_password}{c_obj.db_host}:{c_obj.db_port}/{dbschema}'
+        f'postgresql+psycopg2://{c_obj.db_username}:{c_encoded_password}@{c_obj.db_host}:{c_obj.db_port}/{c_dbschema}'
     )
 
-    c_datas = pd.read_sql(c_obj.query, con=engine)
+    c_datas = pd.read_sql(c_obj.query, con=c_engine)
+    print(c_datas)
 
-    return c_datas
 
 dbschema = "database_api_cdp"
 password = "toto@2021"
@@ -28,6 +28,7 @@ engine = create_engine(
 
 query = """select * from database_api_cdp.configs where deleted_at is null"""
 datas = pd.read_sql(query, con=engine)
+print(datas)
 
 config_objects = []
 for _, row in datas.iterrows():
@@ -52,9 +53,6 @@ for _, row in datas.iterrows():
     )
     config_objects.append(config_obj)
 
-<<<<<<< HEAD
 for config_obj in config_objects:
     connection(config_obj)
-=======
-# hi
->>>>>>> d06e67c0aec1386ea449039cabe296b3c89acaca
+
