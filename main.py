@@ -3,6 +3,7 @@ from urllib.parse import quote
 import pandas as pd
 from urllib.parse import quote
 
+
 dbschema = "database_api_cdp"
 password = "toto@2021"
 encoded_password = quote(password)
@@ -13,6 +14,3 @@ engine = create_engine(
 
 query = """select * from database_api_cdp.configs where deleted_at is null"""
 datas = pd.read_sql(query, con=engine)
-
-
-# hi
