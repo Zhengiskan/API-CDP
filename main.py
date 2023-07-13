@@ -1,3 +1,5 @@
+import json
+
 from sqlalchemy import create_engine
 from urllib.parse import quote
 import pandas as pd
@@ -22,8 +24,9 @@ def connection(c_obj):
     c_datas = pd.read_sql(c_obj.query, con=c_engine)
 
     url = c_obj.api_host
-    headers = c_obj.api_headers
-    print("HEAD: ", headers)
+    headers = json.loads(c_obj.api_headers)
+    print("HEAD: ", type(headers))
+
     for _, c_data in c_datas.iterrows():
         data = {
             "checkin_type": c_data["checkin_type"],
