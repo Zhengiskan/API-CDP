@@ -1,8 +1,15 @@
+import json
+
 from sqlalchemy import create_engine
 from urllib.parse import quote
 import pandas as pd
 from urllib.parse import quote
 from config import *
+import requests
+
+
+def Post_API(c_obj, source_obj):
+    pass
 
 
 def connection(c_obj):
@@ -15,7 +22,27 @@ def connection(c_obj):
     )
 
     c_datas = pd.read_sql(c_obj.query, con=c_engine)
-    print(c_datas)
+
+    url = c_obj.api_host
+    headers = json.loads(c_obj.api_headers)
+    print("HEAD: ", type(headers))
+
+    for _, c_data in c_datas.iterrows():
+        data = {
+            "checkin_type": c_data["checkin_type"],
+            "first_name": c_data["first_name"],
+            "last_name": c_data["last_name"],
+            "email": c_data["email"],
+            "birthdate": c_data["birthdate"],
+            "phone_number": c_data["phone_number"],
+            "sx_id": c_data["sx_id"]
+        }
+
+        response = requests.post(url, headers=headers, json=data)
+
+        # Print the response status code and content
+        print("Response status code:", response.status_code)
+        print("Response content:", response.text)
 
 
 dbschema = "database_api_cdp"
