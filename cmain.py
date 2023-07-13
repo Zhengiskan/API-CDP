@@ -4,8 +4,6 @@ import pandas as pd
 from urllib.parse import quote
 from config import *
 import requests
-import requests
-import json
 
 def connection(c_obj):
     c_dbschema = c_obj.db_name
@@ -18,7 +16,7 @@ def connection(c_obj):
 
     c_datas = pd.read_sql(c_obj.query, con=c_engine)
     print(c_datas)
-
+    return c_datas
 
 
 dbschema = "database_api_cdp"
@@ -56,35 +54,27 @@ for _, row in datas.iterrows():
     )
     config_objects.append(config_obj)
 
-for config_obj in config_objects:
-    connection(config_obj)
-
-formatted_data = []
-for _, row in datas.iterrows():
-    formatted_item = {
-        "checkin_type": row["checkin_type"],
-        "first_name": row["first_name"],
-        "last_name": row["last_name"],
-        "email": row["email"],
-        "birthdate": row["birthdate"],
-        "phone_number": row["phone_number"],
-        "sx_id": row["sx_id"]
-    }
-    formatted_data.append(formatted_item)
+payload = {}
+formatted_data = {}
 
 url = "https://9eb8d506-3124-42c1-92d2-a8c32732eaf2.mock.pstmn.io/post"
+# payload = {
+#     "checkin_type": "$checkin_type",
+#     "first_name": "$first_name",
+#     "last_name": "$last_name",
+#     "email": "$email",
+#     "birthdate": "$birthdate",
+#     "phone_number": "$phone_number",
+#     "sx_id": "$sx_id"
+# }
+
+for config_obj in config_objects:
+    data = connection(config_obj)
+    if data is not None:
+        data = data.astype(str)
+        payload[config_obj.id] = data.to_dict(orient='records')
 
 headers = {'Content-Type': 'application/json'}
-response = requests.post(url, json=formatted_data, headers=headers)
+response = requests.post(url, json=payload, headers=headers)
 
 print(response.text)
-
-# {
-#     "checkin_type" : "$checkin_type",
-#     "first_name" : "$first_name",
-#     "last_name" : "$last_name",
-#     "email" : "$email",
-#     "birthdate" : "$birthdate",
-#     "phone_number" : "$phone_number",
-#     "sx_id" : "$sx_id"
-# }
