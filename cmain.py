@@ -20,7 +20,7 @@ password = "xxxxx"
 encoded_password = quote(password)
 
 engine = create_engine(
-    f"mysql+mysqlconnector://toto:{encoded_password}@35.240.144.191:3306/{dbschema}"
+    f"mysql+mysqlconnector://toto:{encoded_password}@xxx.xxx.xxx.xxx:3306/{dbschema}"
 )
 
 query = """select * from database_api_cdp.configs where deleted_at is null"""
