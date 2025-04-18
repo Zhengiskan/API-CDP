@@ -15,8 +15,8 @@ def connection(c_obj):
     return c_datas
 
 
-dbschema = "database_api_cdp"
-password = "toto@2021"
+dbschema = "xxxxx"
+password = "xxxxx"
 encoded_password = quote(password)
 
 engine = create_engine(
